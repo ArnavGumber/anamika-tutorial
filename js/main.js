@@ -40,20 +40,22 @@
   });
 
   const courseList = document.getElementById("course-list");
-  const enabledCourses = content.courses.filter(function (course) { return course.enabled !== false; });
-  if (enabledCourses.length) {
-    courseList.innerHTML = enabledCourses.map(function (course) {
-      const subjects = Array.isArray(course.subjects) ? course.subjects : [];
+  const enabledPrograms = (content.academicPrograms || []).filter(function (program) {
+    return program.verified === true && program.enabled !== false;
+  });
+  if (enabledPrograms.length) {
+    courseList.innerHTML = enabledPrograms.map(function (program) {
+      const academicMessage = "Hello, I would like to enquire about academic classes at Anamika Tutorial.\n\nI am interested in " + program.className + " - " + program.subject + ".\n\nPlease share the details about availability, timings and fees.";
+      const enquiryUrl = createWhatsAppUrl(academicMessage);
       return `
-        <article class="course-card reveal">
-          <div class="course-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Zm2.5-.5A.5.5 0 0 0 6 5.5V17h12V5H6.5ZM4 19.5A.5.5 0 0 0 4.5 20H18v-1H6.5a2.5 2.5 0 0 1-2.5-.5Z"/></svg>
+        <article class="academic-card reveal">
+          <div class="academic-body">
+            <div class="academic-labels">
+              <span>${escapeHtml(program.className)}</span>
+              <span>${escapeHtml(program.subject)}</span>
+            </div>
+            <a class="button button-primary" href="${escapeHtml(enquiryUrl)}" target="_blank" rel="noopener">Enquire About Classes</a>
           </div>
-          <p class="section-label">${escapeHtml(course.level || "Academic programme")}</p>
-          <h3>${escapeHtml(course.title)}</h3>
-          <p>${escapeHtml(course.description)}</p>
-          ${subjects.length ? `<p><strong>Subjects:</strong> ${subjects.map(escapeHtml).join(", ")}</p>` : ""}
-          <a class="text-link" href="#enquiry">Enquire <span aria-hidden="true">→</span></a>
         </article>`;
     }).join("");
   } else {
@@ -77,53 +79,61 @@
       </article>`;
   }).join("");
 
-  const galleryGrid = document.getElementById("gallery-grid");
-  galleryGrid.innerHTML = content.gallery.map(function (image) {
-    return `
-      <button class="gallery-item reveal" type="button" data-full="${escapeHtml(image.src)}" aria-label="Open image: ${escapeHtml(image.caption)}">
-        <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" loading="lazy" width="800" height="600">
-      </button>`;
-  }).join("");
-
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImage = document.getElementById("lightbox-image");
-  const lightboxClose = lightbox.querySelector(".lightbox-close");
-  let lightboxTrigger = null;
-  galleryGrid.querySelectorAll(".gallery-item").forEach(function (item) {
-    item.addEventListener("click", function () {
-      lightboxTrigger = item;
-      lightboxImage.src = item.dataset.full;
-      lightboxImage.alt = item.querySelector("img").alt;
-      lightbox.hidden = false;
-      document.body.classList.add("lightbox-open");
-      lightboxClose.focus();
-    });
-  });
-  function closeLightbox() {
-    lightbox.hidden = true;
-    document.body.classList.remove("lightbox-open");
-    if (lightboxTrigger) lightboxTrigger.focus();
+  const facultyList = document.getElementById("faculty-list");
+  if (content.faculty && content.faculty.length) {
+    facultyList.innerHTML = `<div class="faculty-grid">${content.faculty.map(function (faculty) {
+      return `
+        <article class="faculty-card reveal">
+          ${faculty.photograph ? `<img src="${escapeHtml(faculty.photograph)}" alt="${escapeHtml(faculty.name)}" loading="lazy">` : ""}
+          <h3>${escapeHtml(faculty.name)}</h3>
+          ${faculty.qualifications ? `<p>${escapeHtml(faculty.qualifications)}</p>` : ""}
+          ${faculty.subjectSpecialisation ? `<p><strong>Specialisation:</strong> ${escapeHtml(faculty.subjectSpecialisation)}</p>` : ""}
+          ${faculty.classesTaught ? `<p><strong>Classes:</strong> ${escapeHtml(faculty.classesTaught)}</p>` : ""}
+          ${faculty.experience ? `<p>${escapeHtml(faculty.experience)}</p>` : ""}
+          ${faculty.biography ? `<p>${escapeHtml(faculty.biography)}</p>` : ""}
+        </article>`;
+    }).join("")}</div>`;
+  } else {
+    facultyList.innerHTML = `
+      <div class="faculty-empty reveal">
+        <div class="faculty-empty-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm-8 8c0-4.4 3.6-8 8-8s8 3.6 8 8v2H4v-2Z"/></svg>
+        </div>
+        <div>
+          <p class="section-label">Our teaching team</p>
+          <h3>Meet the educators of Anamika Tutorial.</h3>
+          <p>Faculty profiles and academic guidance information will be available here.</p>
+        </div>
+        <a class="button button-primary" href="#enquiry">Contact Us</a>
+      </div>`;
   }
-  lightboxClose.addEventListener("click", closeLightbox);
-  lightbox.addEventListener("click", function (event) {
-    if (event.target === lightbox) closeLightbox();
-  });
-  document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
-  });
 
   const resultsContent = document.getElementById("results-content");
   if (content.achievements.length) {
     resultsContent.innerHTML = `<div class="section-heading reveal"><div><p class="section-label">Achievements</p><h2>Celebrating Academic Progress</h2></div><p>Every achievement begins with consistent effort and a strong foundation.</p></div><div class="course-grid"></div>`;
   } else {
-    resultsContent.closest("section").remove();
+    resultsContent.innerHTML = `
+      <div class="compact-empty reveal">
+        <div>
+          <p class="section-label">Academic progress</p>
+          <h2>Celebrating Academic Progress</h2>
+          <p>Verified student achievements will be shared here when available.</p>
+        </div>
+      </div>`;
   }
 
   const testimonialContent = document.getElementById("testimonial-content");
   if (content.testimonials.length) {
     testimonialContent.innerHTML = `<div class="section-heading reveal"><div><p class="section-label">Testimonials</p><h2>What Students and Parents Say</h2></div></div><div class="course-grid"></div>`;
   } else {
-    testimonialContent.closest("section").remove();
+    testimonialContent.innerHTML = `
+      <div class="compact-empty reveal">
+        <div>
+          <p class="section-label">Student and parent experiences</p>
+          <h2>What Students and Parents Say</h2>
+          <p>Genuine testimonials will be featured here with permission.</p>
+        </div>
+      </div>`;
   }
 
   const faqList = document.getElementById("faq-list");

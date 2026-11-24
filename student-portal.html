@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Portal | Anamika Tutorial</title>
+  <meta name="description" content="View announcements and timetable updates for Anamika Tutorial students.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body class="portal-page">
+  <a class="skip-link" href="#portal-main">Skip to portal content</a>
+
+  <header class="site-header portal-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html" aria-label="Anamika Tutorial home">
+        <span class="brand-mark" aria-hidden="true">AT</span>
+        <span class="brand-name">Anamika <strong>Tutorial</strong></span>
+      </a>
+      <nav class="portal-nav" aria-label="Student portal navigation">
+        <a href="#announcements">Announcements</a>
+        <a href="#timetable">Timetable</a>
+        <a class="portal-back" href="index.html">← Back to Website</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="portal-main">
+    <section class="portal-hero" aria-labelledby="portal-title">
+      <div class="container portal-hero-grid">
+        <div>
+          <p class="eyebrow"><span></span> Student information</p>
+          <h1 id="portal-title">Student Portal</h1>
+          <p>Find the latest announcements and view current timetable information.</p>
+        </div>
+        <div class="portal-date" aria-label="Today's date">
+          <span>Today</span>
+          <strong id="portal-date">24 November</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="portal-content" id="announcements" aria-labelledby="announcements-title">
+      <div class="container">
+        <div class="portal-section-heading">
+          <div>
+            <p class="section-label">Latest updates</p>
+            <h2 id="announcements-title">Announcements</h2>
+          </div>
+          <button class="print-button" type="button" id="print-timetable">Print Timetable</button>
+        </div>
+        <div id="announcement-list" class="announcement-list" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="portal-content portal-timetable-section" id="timetable" aria-labelledby="timetable-title">
+      <div class="container">
+        <div class="portal-section-heading">
+          <div>
+            <p class="section-label">Class schedule</p>
+            <h2 id="timetable-title">Timetable</h2>
+          </div>
+        </div>
+        <div id="timetable-content"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="portal-footer">
+    <div class="container">
+      <p>For timetable or batch confirmation, call <a href="tel:+919815419165">+91 98154 19165</a> or <a href="tel:+919041590696">+91 90415 90696</a>.</p>
+      <p>© <span id="portal-year"></span> Anamika Tutorial</p>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/919815419165?text=Hello%2C%20I%20would%20like%20to%20know%20more%20about%20Anamika%20Tutorial." aria-label="Contact Anamika Tutorial on WhatsApp">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3A12.9 12.9 0 0 0 5 22.7L3.2 29l6.5-1.7A13 13 0 1 0 16 3Zm7.5 18.4c-.3.9-1.9 1.8-2.7 1.9-.7.1-1.6.2-2.6-.2-.6-.2-1.4-.5-2.4-.9-4.2-1.8-6.9-6-7.1-6.3-.2-.3-1.7-2.3-1.7-4.3 0-2.1.9-3.1 1.3-3.5.3-.4.7-.5 1-.5h.7c.2 0 .5-.1.8.6.3.7 1 2.5 1.1 2.7.1.2.1.4 0 .7-.1.2-.2.4-.4.6l-.6.7c-.2.2-.4.4-.2.8.2.3.8 1.3 1.7 2.1 1.2 1.1 2.2 1.4 2.5 1.6.3.1.5.1.7-.1.2-.2.8-1 1-1.3.2-.3.5-.3.8-.2.3.1 2 .9 2.3 1.1.3.1.6.2.7.3.1.2.1.8-.2 1.7Z"/></svg>
+  </a>
+
+  <script src="js/portal.js"></script>
+</body>
+</html>
